@@ -3,3 +3,20 @@
 @media(max-width:900px){.site-header nav{display:none}.hero{min-height:620px;padding-bottom:150px}.hero-card{left:22px;right:22px;bottom:28px;width:auto}.benefits{margin:0;border-radius:0;grid-template-columns:1fr}.benefits article{border-right:0;border-bottom:1px solid var(--line)}.section-heading{align-items:start;flex-direction:column;gap:10px}.product-grid{grid-template-columns:repeat(2,1fr)}.footer-main{grid-template-columns:1fr 1fr}.footer-gallery{grid-column:1/-1}.checkout-card{grid-template-columns:1fr}.checkout-summary{min-height:0;border-radius:26px 26px 0 0;display:grid;grid-template-columns:120px 1fr;gap:18px;align-items:center}.summary-image{height:120px;margin:0}.checkout-content{padding:35px}.footer-bottom{gap:10px;flex-direction:column}}
 @media(max-width:600px){.site-header{height:68px;padding:0 15px}.brand{font-size:16px}.brand-mark{width:36px;height:36px}.cart-button span{display:none}.hero{padding:55px 20px 160px}.hero h1{font-size:42px}.hero p{font-size:16px}.product-section{padding:75px 14px}.product-grid{grid-template-columns:1fr}.product-media{height:290px}.footer-main{padding:55px 20px;grid-template-columns:1fr;gap:30px}.footer-gallery{grid-column:auto}.footer-bottom{padding:20px}.checkout-summary{padding:25px 20px}.checkout-summary h3{font-size:17px}.checkout-content{padding:30px 20px}.form-actions{grid-template-columns:1fr}.result-card{padding:38px 24px}.modal{padding:8px}.checkout-card{max-height:98vh;border-radius:20px}.checkout-summary{border-radius:20px 20px 0 0}}
 [hidden]{display:none!important}
+
+/* ===== HERO MOBIL DUZELTME ===== */
+@media (max-width:600px){
+  .hero{
+    min-height:620px!important;
+    background-size:100% auto!important;
+    background-position:center top!important;
+    background-repeat:no-repeat!important;
+    background-color:#f7f5f2!important;
+    padding:55px 20px 160px!important;
+  }
+  .hero[style*="background-image"]{
+    background-size:100% auto!important;
+    background-position:center top!important;
+    background-repeat:no-repeat!important;
+  }
+}
