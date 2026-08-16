@@ -4,6 +4,7 @@ const money=value=>new Intl.NumberFormat('tr-TR',{style:'currency',currency:'TRY
 const esc=value=>String(value??'').replace(/[&<>"]/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[ch]));
 const sessionId=localStorage.getItem('kp_session')||crypto.randomUUID();
 localStorage.setItem('kp_session',sessionId);
+setTimeout(()=>document.body.classList.add('site-ready'),5000);
 
 function toast(message){$('toast').textContent=message;$('toast').hidden=false;clearTimeout(toast.timer);toast.timer=setTimeout(()=>$('toast').hidden=true,2400)}
 function track(stage){state.stage=stage;fetch('/api/track',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({sessionId,stage})}).catch(()=>{})}
@@ -67,4 +68,4 @@ $('personalForm').onsubmit=e=>{e.preventDefault();showStep(2)};$('backToPersonal
 $('finishButton').onclick=()=>{$('processModal').hidden=true;$('personalForm').reset();$('campaignForm').reset();track('homepage');scrollTo({top:0,behavior:'smooth'})};
 $('year').textContent=new Date().getFullYear();
 
-(async()=>{try{const r=await fetch('/api/public');if(!r.ok)throw new Error();const data=await r.json();state.settings=data.settings||{};state.products=data.products||[];applySettings();renderProducts();track('homepage')}catch{$('productGrid').innerHTML='<p>Ürünler şu anda yüklenemiyor. Lütfen daha sonra tekrar deneyin.</p>'}})();
+(async()=>{try{const r=await fetch('/api/public');if(!r.ok)throw new Error();const data=await r.json();state.settings=data.settings||{};state.products=data.products||[];applySettings();renderProducts();track('homepage')}catch{$('productGrid').innerHTML='<p>Ürünler şu anda yüklenemiyor. Lütfen daha sonra tekrar deneyin.</p>'}finally{document.body.classList.add('site-ready')}})();
