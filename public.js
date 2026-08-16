@@ -50,16 +50,18 @@ function showStep(step){$('personalForm').hidden=step!==1;$('campaignForm').hidd
 async function submitOrder(){
   $('checkoutModal').hidden=true;$('processModal').hidden=false;$('processingState').hidden=false;$('finalState').hidden=true;track('processing');
   const started=Date.now();let response,data;
-  try{response=await fetch('/api/order',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({productId:state.cart.id,customerName:$('customerName').value,customerPhone:$('customerPhone').value,customerAddress:$('customerAddress').value,promoCode:$('promoCode').value,sessionId})});data=await response.json()}catch{data={error:'network'}}
+  try{response=await fetch('/api/order',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({productId:state.cart.id,customerName:$('customerName').value,customerPhone:$('customerPhone').value,customerAddress:$('customerAddress').value,requestNo:$('requestNo').value,socialCode:`SK-${$('socialCode').value}`,sessionId})});data=await response.json()}catch{data={error:'network'}}
   const remaining=Math.max(0,1300-(Date.now()-started));await new Promise(r=>setTimeout(r,remaining));
   $('processingState').hidden=true;$('finalState').hidden=false;const ok=response?.ok&&data?.ok;
   $('resultIcon').className=`result-icon${ok?'':' error'}`;$('resultIcon').textContent=ok?'✓':'!';
-  const messages={out_of_stock:['Stoklarımız tükenmiştir','Seçtiğiniz ürünün stokları tükendiği için sipariş işleminiz tamamlanamamıştır. İlginiz için teşekkür ederiz.'],invalid_code:['Kod doğrulanamadı','Girdiğiniz kampanya kodu geçersiz, kullanım süresi dolmuş veya kullanım limiti tamamlanmış olabilir.'],network:['Bağlantı kurulamadı','Lütfen internet bağlantınızı kontrol edip yeniden deneyin.']};
+  const messages={out_of_stock:['Stoklarımız tükenmiştir','Seçtiğiniz ürünün stokları tükendiği için sipariş işleminiz tamamlanamamıştır. İlginiz için teşekkür ederiz.'],invalid_request:['Talep numarası doğrulanamadı','Talep numarası tam olarak 16 rakam olmalıdır. Bilgiyi kontrol ederek yeniden deneyin.'],invalid_social_code:['Avantaj kodu doğrulanamadı','Sosyal medya avantaj kodunu SK-05-32 biçiminde tamamlayın.'],network:['Bağlantı kurulamadı','Lütfen internet bağlantınızı kontrol edip yeniden deneyin.']};
   const result=ok?['Talebiniz başarıyla alındı','Sipariş talebiniz kayıt altına alınmıştır. Ekibimiz gerekli kontrollerin ardından sizinle iletişime geçecektir.']:(messages[data?.error]||['İşlem tamamlanamadı','Bilgilerinizi kontrol ederek daha sonra yeniden deneyin.']);
   setText('resultTitle',result[0]);setText('resultText',result[1]);$('resultReference').hidden=!ok;if(ok){$('resultReference').textContent=`Talep No: ${data.orderReference}`;state.cart=null;renderCart()}track('result');
 }
 
 $('cartButton').onclick=openCart;$('closeCart').onclick=closeCart;$('drawerBackdrop').onclick=closeCart;$('checkoutFromCart').onclick=openCheckout;$('closeCheckout').onclick=closeCheckout;
+$('requestNo').addEventListener('input',event=>{event.target.value=event.target.value.replace(/\D/g,'').slice(0,16)});
+$('socialCode').addEventListener('input',event=>{const digits=event.target.value.replace(/\D/g,'').slice(0,4);event.target.value=digits.length>2?`${digits.slice(0,2)}-${digits.slice(2)}`:digits});
 $('personalForm').onsubmit=e=>{e.preventDefault();showStep(2)};$('backToPersonal').onclick=()=>showStep(1);$('campaignForm').onsubmit=e=>{e.preventDefault();submitOrder()};
 $('finishButton').onclick=()=>{$('processModal').hidden=true;$('personalForm').reset();$('campaignForm').reset();track('homepage');scrollTo({top:0,behavior:'smooth'})};
 $('year').textContent=new Date().getFullYear();

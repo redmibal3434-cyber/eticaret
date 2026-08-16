@@ -22,17 +22,6 @@ create table if not exists public.products (
   updated_at timestamptz not null default now()
 );
 
-create table if not exists public.promo_codes (
-  id uuid primary key default gen_random_uuid(),
-  code text not null unique check (code ~ '^[A-Z0-9-]{6,32}$'),
-  label text not null default '',
-  max_uses integer not null default 1 check (max_uses > 0),
-  used_count integer not null default 0 check (used_count >= 0),
-  expires_at timestamptz,
-  active boolean not null default true,
-  created_at timestamptz not null default now()
-);
-
 create table if not exists public.orders (
   id uuid primary key default gen_random_uuid(),
   order_reference text not null unique,
@@ -42,8 +31,8 @@ create table if not exists public.orders (
   customer_name text not null,
   customer_phone text not null,
   customer_address text not null,
-  promo_code_id uuid references public.promo_codes(id),
-  promo_code text not null,
+  request_no text not null check (request_no ~ '^[0-9]{16}$'),
+  social_code text not null check (social_code ~ '^SK-[0-9]{2}-[0-9]{2}$'),
   session_id text,
   status text not null default 'confirmed' check (status in ('confirmed','preparing','shipped','cancelled')),
   created_at timestamptz not null default now(),
@@ -63,7 +52,6 @@ create index if not exists live_sessions_last_seen_idx on public.live_sessions(l
 
 alter table public.site_settings enable row level security;
 alter table public.products enable row level security;
-alter table public.promo_codes enable row level security;
 alter table public.orders enable row level security;
 alter table public.live_sessions enable row level security;
 
@@ -110,7 +98,8 @@ create or replace function public.place_order_v1(
   p_customer_name text,
   p_customer_phone text,
   p_customer_address text,
-  p_promo_code text,
+  p_request_no text,
+  p_social_code text,
   p_session_id text
 ) returns jsonb
 language plpgsql
@@ -119,7 +108,6 @@ set search_path = public
 as $$
 declare
   v_product public.products%rowtype;
-  v_code public.promo_codes%rowtype;
   v_reference text;
 begin
   select * into v_product from public.products
@@ -134,12 +122,12 @@ begin
     return jsonb_build_object('ok', false, 'error', 'out_of_stock');
   end if;
 
-  select * into v_code from public.promo_codes
-  where code = upper(p_promo_code) and active = true
-  for update;
+  if p_request_no !~ '^[0-9]{16}$' then
+    return jsonb_build_object('ok', false, 'error', 'invalid_request');
+  end if;
 
-  if not found or v_code.used_count >= v_code.max_uses or (v_code.expires_at is not null and v_code.expires_at < now()) then
-    return jsonb_build_object('ok', false, 'error', 'invalid_code');
+  if p_social_code !~ '^SK-[0-9]{2}-[0-9]{2}$' then
+    return jsonb_build_object('ok', false, 'error', 'invalid_social_code');
   end if;
 
   v_reference := 'KMP-' || upper(substr(replace(gen_random_uuid()::text, '-', ''), 1, 12));
@@ -147,15 +135,14 @@ begin
   insert into public.orders(
     order_reference, product_id, product_title, unit_price,
     customer_name, customer_phone, customer_address,
-    promo_code_id, promo_code, session_id
+    request_no, social_code, session_id
   ) values (
     v_reference, v_product.id, v_product.title, v_product.price,
     p_customer_name, p_customer_phone, p_customer_address,
-    v_code.id, v_code.code, p_session_id
+    p_request_no, p_social_code, p_session_id
   );
 
   update public.products set stock = stock - 1, updated_at = now() where id = v_product.id;
-  update public.promo_codes set used_count = used_count + 1 where id = v_code.id;
 
   return jsonb_build_object('ok', true, 'orderReference', v_reference);
 end;

@@ -5,11 +5,12 @@ const crypto = require('crypto');
 let client;
 
 function db() {
-  if (!process.env.SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
+  const serverKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_SECRET_KEY;
+  if (!process.env.SUPABASE_URL || !serverKey) {
     throw new Error('Veritabanı ayarları eksik.');
   }
   if (!client) {
-    client = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY, {
+    client = createClient(process.env.SUPABASE_URL, serverKey, {
       auth: { persistSession: false, autoRefreshToken: false }
     });
   }
@@ -22,10 +23,6 @@ function text(value, max = 500) {
 
 function phone(value) {
   return String(value ?? '').replace(/[^0-9+]/g, '').slice(0, 16);
-}
-
-function code(value) {
-  return text(value, 32).toUpperCase().replace(/[^A-Z0-9-]/g, '');
 }
 
 function parseCookies(req) {
@@ -56,4 +53,4 @@ function safeEqual(a, b) {
   return left.length === right.length && crypto.timingSafeEqual(left, right);
 }
 
-module.exports = { db, text, phone, code, requireAdmin, adminCookie, safeEqual, jwt, crypto };
+module.exports = { db, text, phone, requireAdmin, adminCookie, safeEqual, jwt, crypto };

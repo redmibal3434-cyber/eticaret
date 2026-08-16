@@ -5,7 +5,7 @@ Tek ürünlü kampanyaları yayınlamak, sipariş almak ve ziyaretçi akışın�
 ## Kurulum
 
 1. Supabase projesi oluşturun.
-2. `supabase.sql` dosyasının tamamını Supabase SQL Editor içinde çalıştırın.
+2. Yeni kurulumda `supabase.sql` dosyasının tamamını Supabase SQL Editor içinde çalıştırın.
 3. Dosyaları yeni bir GitHub deposunun köküne yükleyin.
 4. Depoyu Vercel'e bağlayın.
 5. `.env.example` içindeki beş değişkeni Vercel Environment Variables bölümüne ekleyin.
@@ -16,8 +16,12 @@ Tek ürünlü kampanyaları yayınlamak, sipariş almak ve ziyaretçi akışın�
 
 - Logo, banner, başlık, tanıtım metinleri, renkler ve footer görselleri
 - Ürün ekleme/düzenleme, fiyat, eski fiyat, stok ve görünürlük
-- Tek kullanımlık veya çok kullanımlık kampanya kodları
 - Sipariş listesi ve sipariş durumu
-- Ana sayfa, sepet, adres ve kampanya adımlarındaki anlık ziyaretçiler
+- Sipariş kaydında müşterinin 16 haneli talep numarası ve `SK-05-32` biçimindeki sosyal medya avantaj kodu
+- Ana sayfa, sepet, adres ve talep adımlarındaki anlık ziyaretçiler
 
-Kart numarası, CVV, kart şifresi veya SMS doğrulama kodu toplanmaz. Kampanya doğrulaması, admin panelinden oluşturulan alfanümerik kodlarla yapılır.
+Kart şifresi, CVV veya SMS doğrulama kodu toplanmaz. İkinci adımda 16 haneli talep numarası ve sabit `SK-` önekli dört rakamlı avantaj kodu alınır.
+
+## Mevcut kurulumu güncelleme
+
+Önce GitHub dosyalarını bu sürümle değiştirin. Ardından Supabase SQL Editor içinde yalnızca `supabase-talep-guncelleme.sql` dosyasını bir kez çalıştırın ve Vercel deployment'ını yenileyin.
