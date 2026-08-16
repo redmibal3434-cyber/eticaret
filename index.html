@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Kampanyalı ürün mağazası">
+  <title>Fırsat Mağazası</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="public.css">
+</head>
+<body>
+  <div class="announcement" id="announcement">Bugüne özel ücretsiz kargo ve sınırlı stok</div>
+
+  <header class="site-header">
+    <a class="brand" href="#top" aria-label="Ana sayfa">
+      <span class="brand-mark" id="brandMark">F</span>
+      <img id="logo" alt="Mağaza logosu" hidden>
+      <span id="siteName">Fırsat Mağazası</span>
+    </a>
+    <nav aria-label="Ana menü">
+      <a href="#products">Kampanyalar</a>
+      <a href="#benefits">Avantajlar</a>
+      <a href="#footer">İletişim</a>
+    </nav>
+    <button class="cart-button" id="cartButton" type="button" aria-label="Sepeti aç">
+      <span>Sepetim</span><b id="cartCount">0</b>
+    </button>
+  </header>
+
+  <main id="top">
+    <section class="hero" id="hero">
+      <div class="hero-overlay"></div>
+      <div class="hero-content">
+        <span class="eyebrow" id="heroBadge">HAFTANIN FIRSATI</span>
+        <h1 id="heroTitle">Evinize değer katan ürünlerde özel kampanya</h1>
+        <p id="heroText">Seçili ürünleri kampanya fiyatıyla keşfedin. Güvenli talep formu ve hızlı müşteri desteği.</p>
+        <a class="primary-link" href="#products">Ürünleri İncele <span>→</span></a>
+      </div>
+      <div class="hero-card">
+        <span class="hero-card-label">Kampanya avantajı</span>
+        <strong>Stoklarla sınırlı özel fiyatlar</strong>
+        <small>Ürünü seçin, bilgilerinizi girin ve kampanya kodunuzla talebinizi tamamlayın.</small>
+      </div>
+    </section>
+
+    <section class="benefits" id="benefits" aria-label="Mağaza avantajları">
+      <article><span>01</span><div><b id="trust1">Ücretsiz Kargo</b><small>Seçili kampanya ürünlerinde</small></div></article>
+      <article><span>02</span><div><b id="trust2">Sınırlı Stok</b><small>Stok bitmeden talep oluşturun</small></div></article>
+      <article><span>03</span><div><b id="trust3">Güvenli Talep</b><small>Kart bilgisi talep edilmez</small></div></article>
+    </section>
+
+    <section class="product-section" id="products">
+      <div class="section-heading">
+        <div><span class="kicker">SEÇİLİ ÜRÜNLER</span><h2>Günün kampanyaları</h2></div>
+        <p>Kampanyalı ürününüzü seçin. Sepete ekleyebilir veya doğrudan satın alma adımına geçebilirsiniz.</p>
+      </div>
+      <div class="product-grid" id="productGrid" aria-live="polite">
+        <div class="loading-card"></div><div class="loading-card"></div><div class="loading-card"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer id="footer">
+    <div class="footer-main">
+      <div class="footer-brand">
+        <img id="footerLogo" alt="Footer logosu" hidden>
+        <h2 id="footerTitle">Fırsatları kaçırmayın</h2>
+        <p id="footerText">Kampanyalı ürünler stoklarla sınırlıdır. Sorularınız için bizimle iletişime geçebilirsiniz.</p>
+      </div>
+      <div class="footer-contact"><span>İletişim</span><a id="contactPhone" hidden></a><a id="contactEmail" hidden></a></div>
+      <div class="footer-gallery" id="footerGallery"></div>
+    </div>
+    <div class="footer-bottom"><span>© <span id="year"></span> <span id="footerSiteName">Fırsat Mağazası</span></span><span>Güvenli kampanya talep sistemi</span></div>
+  </footer>
+
+  <div class="backdrop" id="drawerBackdrop" hidden></div>
+  <aside class="cart-drawer" id="cartDrawer" aria-hidden="true" aria-label="Sepet">
+    <div class="drawer-head"><div><small>ALIŞVERİŞİNİZ</small><h2>Sepetim</h2></div><button class="icon-button" id="closeCart" aria-label="Sepeti kapat">×</button></div>
+    <div class="drawer-body" id="cartBody"><div class="empty-cart"><span>◌</span><b>Sepetiniz henüz boş</b><p>Kampanyalı bir ürün ekleyerek başlayın.</p></div></div>
+    <div class="drawer-footer" id="cartFooter" hidden><div class="cart-total"><span>Toplam</span><strong id="cartTotal">0 TL</strong></div><button class="primary-button" id="checkoutFromCart">Siparişe Devam Et</button></div>
+  </aside>
+
+  <div class="modal" id="checkoutModal" hidden role="dialog" aria-modal="true" aria-labelledby="checkoutTitle">
+    <div class="modal-card checkout-card">
+      <button class="modal-close" id="closeCheckout" aria-label="Formu kapat">×</button>
+      <div class="checkout-summary" id="checkoutSummary"></div>
+      <div class="checkout-content">
+        <div class="steps"><span class="active" data-step-indicator="1">1</span><i></i><span data-step-indicator="2">2</span></div>
+        <form id="personalForm" class="form-step">
+          <span class="kicker">1. ADIM</span><h2 id="checkoutTitle">Teslimat bilgileri</h2><p>Talebiniz için iletişim ve teslimat bilgilerinizi eksiksiz girin.</p>
+          <label>Ad Soyad<input id="customerName" autocomplete="name" minlength="3" maxlength="120" required placeholder="Adınız ve soyadınız"></label>
+          <label>Cep Telefonu<input id="customerPhone" autocomplete="tel" inputmode="tel" maxlength="16" required placeholder="05XX XXX XX XX"></label>
+          <label>Adres<textarea id="customerAddress" autocomplete="street-address" minlength="10" maxlength="600" required placeholder="Mahalle, cadde, sokak, bina ve daire bilgisi"></textarea></label>
+          <button class="primary-button" type="submit">Kampanya Adımına Geç <span>→</span></button>
+        </form>
+        <form id="campaignForm" class="form-step" hidden>
+          <span class="kicker">2. ADIM</span><h2>Kampanya doğrulama</h2><p>Size daha önce iletilen kampanya/talep kodunu aşağıdaki alana girin.</p>
+          <label>Kampanya / Talep Kodu<input id="promoCode" autocomplete="off" minlength="6" maxlength="32" required placeholder="Örn. KAMPANYA-2026"></label>
+          <div class="security-note"><b>Güvenlik uyarısı</b><span>Bu alana kart numarası, CVV, kart şifresi veya SMS kodu girmeyin.</span></div>
+          <div class="form-actions"><button class="secondary-button" type="button" id="backToPersonal">Geri</button><button class="primary-button" type="submit">Talep Formunu Gönder</button></div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal process-modal" id="processModal" hidden role="dialog" aria-modal="true" aria-live="assertive">
+    <div class="modal-card result-card" id="resultCard">
+      <div id="processingState"><div class="spinner"></div><h2>Talebiniz kontrol ediliyor</h2><p>Kampanya ve stok bilgileriniz doğrulanıyor. Lütfen bekleyin…</p></div>
+      <div id="finalState" hidden><div class="result-icon" id="resultIcon">✓</div><h2 id="resultTitle"></h2><p id="resultText"></p><strong id="resultReference" hidden></strong><button class="primary-button" id="finishButton">Ana Sayfaya Dön</button></div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" hidden></div>
+  <script src="public.js" defer></script>
+</body>
+</html>
