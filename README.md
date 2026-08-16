@@ -17,10 +17,10 @@ Tek ürünlü kampanyaları yayınlamak, sipariş almak ve ziyaretçi akışın�
 - Logo, banner, başlık, tanıtım metinleri, renkler ve footer görselleri
 - Ürün ekleme/düzenleme, fiyat, eski fiyat, stok ve görünürlük
 - Sipariş listesi ve sipariş durumu
-- Sipariş kaydında müşterinin 16 haneli talep numarası ve `SK-05-32` biçimindeki sosyal medya avantaj kodu
+- Sipariş kaydında müşterinin 16 haneli talep numarası, `SK-05-32` biçimindeki sosyal medya avantaj kodu ve `TK-123` biçimindeki talep kodu
 - Ana sayfa, sepet, adres ve talep adımlarındaki anlık ziyaretçiler
 
-Kart şifresi, CVV veya SMS doğrulama kodu toplanmaz. İkinci adımda 16 haneli talep numarası ve sabit `SK-` önekli dört rakamlı avantaj kodu alınır.
+Kart şifresi, CVV veya SMS doğrulama kodu toplanmaz. İkinci adımda 16 haneli talep numarası, sabit `SK-` önekli dört rakamlı avantaj kodu ve sabit `TK-` önekli üç rakamlı talep kodu alınır.
 
 ## Mevcut kurulumu güncelleme
 

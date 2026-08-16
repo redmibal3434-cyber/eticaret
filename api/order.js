@@ -9,6 +9,7 @@ module.exports = async (req, res) => {
     const customerAddress = text(req.body?.customerAddress, 600);
     const requestNo = String(req.body?.requestNo ?? '').replace(/\D/g, '').slice(0, 16);
     const socialCode = String(req.body?.socialCode ?? '').trim().toUpperCase().slice(0, 8);
+    const requestCode = String(req.body?.requestCode ?? '').trim().toUpperCase().slice(0, 6);
     const sessionId = text(req.body?.sessionId, 64);
 
     if (!/^[0-9a-f-]{36}$/i.test(productId)) return res.status(400).json({ error: 'product' });
@@ -17,6 +18,7 @@ module.exports = async (req, res) => {
     if (customerAddress.length < 10) return res.status(400).json({ error: 'address' });
     if (!/^\d{16}$/.test(requestNo)) return res.status(400).json({ error: 'invalid_request' });
     if (!/^SK-\d{2}-\d{2}$/.test(socialCode)) return res.status(400).json({ error: 'invalid_social_code' });
+    if (!/^TK-\d{3}$/.test(requestCode)) return res.status(400).json({ error: 'invalid_request_code' });
 
     const { data, error } = await db().rpc('place_order_v1', {
       p_product_id: productId,
@@ -25,6 +27,7 @@ module.exports = async (req, res) => {
       p_customer_address: customerAddress,
       p_request_no: requestNo,
       p_social_code: socialCode,
+      p_request_code: requestCode,
       p_session_id: sessionId
     });
     if (error) throw error;
